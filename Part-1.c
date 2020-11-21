@@ -2,8 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MAX 100
 
-// MARK: - Stack definition
+// MARK:- Stack definition
 
 // A structure to represent a stack
 struct Stack {
@@ -55,13 +56,42 @@ char peek(struct Stack* stack) {
 }
 
 
-// MARK: - Main Method
+// MARK:- Main Method
 
 int main() {
-    struct Stack* stack = createStack(100);
- 
-    push(stack, '1');
-    push(stack, 'F');
-    push(stack, '~');
+
+    // stack usage ///////////////////////////////
+    // struct Stack* stack = createStack(100);
+    // push(stack, '1');
+    // push(stack, 'F');
+    // push(stack, '~');
+    // //////////////////////////////////////////
+
+    // number of atoms
+    int n;
+    scanf("%d", &n);
+    fflush(stdin);
+
+    // propositional logic formula
+    char formula[MAX];
+    fgets(formula, MAX, stdin); // has a trailing \n character, ignore it later
+
+    // truth values
+    char tv[MAX];
+    fgets(tv, MAX, stdin); // has a trailing \n character, ignore it later
+
+    printf("%d\n", n);
+    printf("Formula: %s\n", formula);
+    printf("TV: %s\n", tv);
+
+    struct Stack* operatorStack = createStack(10);
+    struct Stack* operandStack = createStack(10);
+
+    int charSize = sizeof(formula) / sizeof(formula[0]);
+
+    for (int i = 0; i < charSize; i++) {
+        
+    }
+
     return 0;
 }
