@@ -57,7 +57,7 @@ int main() {
 
     // number of atoms
     int n;
-    scanf("%d", &n);
+    scanf("%d\n", &n);
     fflush(stdin);
 
     // propositional logic formula
