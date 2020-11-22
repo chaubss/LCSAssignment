@@ -68,8 +68,8 @@ int main() {
     char tv[MAX];
     fgets(tv, MAX, stdin); // has a trailing \n character, ignore it later
 
-    struct Stack *operatorStack = createStack(10);
-    struct Stack *operandStack = createStack(10);
+    struct Stack *operatorStack = createStack(MAX);
+    struct Stack *operandStack = createStack(MAX);
 
     int charSize = strlen(formula) - 1; // ignoring the trailing \n character
     for (int i = 0; i < charSize; i++) {
