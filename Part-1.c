@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 #define MAX 100
 
@@ -84,8 +83,8 @@ int main() {
                 // binary operator
                 char operand2 = pop(operandStack);
                 char operand1 = pop(operandStack);
-                int truthValue1 = tolower(operand1) == 't';
-                int truthValue2 = tolower(operand2) == 't';
+                int truthValue1 = (operand1 == 'T');
+                int truthValue2 = (operand2 == 'T');
                 int truthValueFinal;
                 if (cursor == '^') {
                     truthValueFinal = truthValue1 & truthValue2;
@@ -96,17 +95,16 @@ int main() {
                 }
                 char operandFinal = (truthValueFinal == 1) ? 'T' : 'F';
                 push(operandStack, operandFinal);
-            }
-            else {
+            } else {
                 // unary operator
                 char operand = pop(operandStack);
-                int truthValue = tolower(operand) == 't';
+                int truthValue = (operand == 'T');
                 // negation is the only uninary operator
                 int truthValueFinal = !truthValue;
                 char operandFinal = (truthValueFinal == 1) ? 'T' : 'F';
                 push(operandStack, operandFinal);
             }
-            pop(operatorStack); // pop the (
+            pop(operatorStack); // pop the '('
         } else {
             char correspondingTruthValue = tv[tempChar - '0' - 1];
             push(operandStack, correspondingTruthValue);
