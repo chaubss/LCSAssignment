@@ -1,3 +1,12 @@
+/* Logic Homework 3, Part 1 */
+/* Team Number: 7 */
+/* Team Members:
+1. Aagam Shah 2019A7PS1320H
+2. Aryan Chaubal 2019A7PS0130H
+3. Prathmesh Srivastava 2019A7PS1322H
+4. Samarth Jain 2019A7PS0179H
+*/
+
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -53,20 +62,7 @@ char peek(struct Stack *stack) {
     return stack->array[stack->top];
 }
 
-int main() {
-
-    // number of atoms
-    int n;
-    scanf("%d\n", &n);
-
-    // propositional logic formula
-    char formula[MAX];
-    fgets(formula, MAX, stdin); // has a trailing \n character, ignore it later
-
-    // truth values
-    char tv[MAX];
-    fgets(tv, MAX, stdin); // has a trailing \n character, ignore it later
-
+void evalFormula(int n, char formula[MAX], char tv[MAX]) {
     struct Stack *operatorStack = createStack(MAX);
     struct Stack *operandStack = createStack(MAX);
 
@@ -110,5 +106,23 @@ int main() {
         }
     }
     printf("%c\n", pop(operandStack));
+}
+
+int main() {
+
+    // number of atoms
+    int n;
+    scanf("%d\n", &n);
+
+    // propositional logic formula
+    char formula[MAX];
+    fgets(formula, MAX, stdin); // has a trailing \n character, ignore it later
+
+    // truth values
+    char tv[MAX];
+    fgets(tv, MAX, stdin); // has a trailing \n character, ignore it later
+
+    evalFormula(n, formula, tv);
+    
     return 0;
 }
