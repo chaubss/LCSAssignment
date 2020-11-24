@@ -14,6 +14,8 @@
 
 #define MAX 100
 
+// Stack Definition, taken from https://www.geeksforgeeks.org/stack-data-structure-introduction-program/
+
 // A structure to represent a stack
 struct Stack {
     char top;
@@ -62,67 +64,79 @@ char peek(struct Stack *stack) {
     return stack->array[stack->top];
 }
 
-void evalFormula(int n, char formula[MAX], char tv[MAX]) {
+// This method will return the correct truth value after running the algorithm
+char evalFormula(int n, char formula[MAX], char tv[MAX]) {
+
+    // Create the stacks for operator and operand
     struct Stack *operatorStack = createStack(MAX);
     struct Stack *operandStack = createStack(MAX);
 
     int charSize = strlen(formula) - 1; // ignoring the trailing \n character
     for (int i = 0; i < charSize; i++) {
-        if (formula[i] == ' ' || formula[i] == '\n') { continue; }
-        char tempChar = formula[i];
+        if (formula[i] == ' ' || formula[i] == '\n') { continue; } // ignore any whitespace or new line characters
+        char tempChar = formula[i]; // a variable holding the current character
         if (tempChar == '~' || tempChar == '^' || tempChar == 'V' || tempChar == '>' || tempChar == '(') {
+            // If it is an operator, push it into the operator stack
             push(operatorStack, tempChar);
         } else if (tempChar == ')') {
-            char cursor = pop(operatorStack);
+            // Run process for when character is detected as a ')'
+            char cursor = pop(operatorStack); // This is the current operator
             if (cursor == '^' || cursor == 'V' || cursor == '>') {
-                // binary operator
-                char operand2 = pop(operandStack);
+                // This is a binary operator, in this case, pop two values from the operand stack
+                char operand2 = pop(operandStack); // operand2 is first because it was added last, and the stack will pop the last element
                 char operand1 = pop(operandStack);
-                int truthValue1 = (operand1 == 'T');
+                int truthValue1 = (operand1 == 'T'); // Get the corresponding bit as in integer, 1 for T and 0 for F
                 int truthValue2 = (operand2 == 'T');
                 int truthValueFinal;
+                // run the bitwise operations based on value of cursor
                 if (cursor == '^') {
                     truthValueFinal = truthValue1 & truthValue2;
                 } else if (cursor == 'V') {
                     truthValueFinal = truthValue1 | truthValue2;
                 } else if (cursor == '>') {
-                    truthValueFinal = !truthValue1 | truthValue2;
+                    truthValueFinal = !truthValue1 | truthValue2; // equivalent to implies
                 }
+                // Get the character T or F corresponding to 1 or 0
                 char operandFinal = (truthValueFinal == 1) ? 'T' : 'F';
-                push(operandStack, operandFinal);
+                push(operandStack, operandFinal); // Push it to the operator stack
             } else {
-                // unary operator
-                char operand = pop(operandStack);
+                // In case it wasn't a binary operator, it will be a unary operator
+                char operand = pop(operandStack); // Pop only one operand this time since its unary
                 int truthValue = (operand == 'T');
-                // negation is the only uninary operator
+                // Negation is the only uninary operator
                 int truthValueFinal = !truthValue;
                 char operandFinal = (truthValueFinal == 1) ? 'T' : 'F';
                 push(operandStack, operandFinal);
             }
-            pop(operatorStack); // pop the '('
+            pop(operatorStack); // Pop the last '(' corresponding to this operation
         } else {
-            char correspondingTruthValue = tv[tempChar - '0' - 1];
+            // Assuming correct input, in all other cases, this will be an operand
+            char correspondingTruthValue = tv[tempChar - '0' - 1]; // Getting the correct integer from character's ASCII value
+            // Push the corresponding truth value into the operand stack
             push(operandStack, correspondingTruthValue);
         }
     }
-    printf("%c\n", pop(operandStack));
+    // In the end, the answer will be the only element left in the operand stack, pop and return it
+    return(pop(operandStack));
 }
 
 int main() {
 
-    // number of atoms
+    // Number of atoms
     int n;
     scanf("%d\n", &n);
 
-    // propositional logic formula
+    // Propositional Logic Formula
     char formula[MAX];
-    fgets(formula, MAX, stdin); // has a trailing \n character, ignore it later
+    fgets(formula, MAX, stdin); // fgets leaves a trailing \n character, ignore it later
 
-    // truth values
+    // Truth Values
     char tv[MAX];
-    fgets(tv, MAX, stdin); // has a trailing \n character, ignore it later
+    fgets(tv, MAX, stdin);
 
-    evalFormula(n, formula, tv);
+    // Run the method we created evalFormula to get the answer
+    char answer = evalFormula(n, formula, tv);
+    printf("%c\n", answer);
     
     return 0;
 }
